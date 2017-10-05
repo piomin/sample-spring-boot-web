@@ -52,5 +52,15 @@ public class PersonController {
 	public void update(@RequestBody Person p) {
 		repository.save(p);
 	}
+
+	@GetMapping("/lastname/{lastName}")
+	public List<Person> findByLastName(@RequestParam("lastName") String lastName) {
+		return repository.findByLastName(lastName);
+	}
+	
+	@GetMapping("/age/{age}")
+	public List<Person> findByAgeGreaterThan(@RequestParam("age") int age) {
+		return repository.findByAgeGreaterThan(age);
+	}
 	
 }
