@@ -1,18 +1,23 @@
 package pl.piomin.services.boot.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "person")
 public class Person {
 
-	private Long id;
+	@Id
+	private String id;
 	private String firstName;
 	private String lastName;
 	private int age;
 	private Gender gender;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

@@ -1,8 +1,6 @@
 package pl.piomin.services.boot.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,47 +12,45 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import pl.piomin.services.boot.data.PersonRepository;
 import pl.piomin.services.boot.model.Person;
 import pl.piomin.services.boot.service.PersonCounterService;
 
 @RestController
 @RequestMapping("/person")
 public class PersonController {
-
-	private List<Person> persons = new ArrayList<>();
 	
 	@Autowired
-	PersonCounterService counterService;
+	private PersonRepository repository;
+	@Autowired
+	private PersonCounterService counterService;
 	
 	@GetMapping
 	public List<Person> findAll() {
-		return persons;
+		return repository.findAll();
 	}
 	
 	@GetMapping("/{id}")
-	public Person findById(@RequestParam("id") Long id) {
-		return persons.stream().filter(it -> it.getId().equals(id)).findFirst().get();
+	public Person findById(@RequestParam("id") String id) {
+		return repository.findOne(id);
 	}
 	
 	@PostMapping
 	public Person add(@RequestBody Person p) {
-		p.setId((long) (persons.size()+1));
-		persons.add(p);
+		p = repository.save(p);
 		counterService.countNewPersons();
 		return p;
 	}
 	
 	@DeleteMapping("/{id}")
-	public void delete(@RequestParam("id") Long id) {
-		List<Person> p = persons.stream().filter(it -> it.getId().equals(id)).collect(Collectors.toList());
-		persons.removeAll(p);
+	public void delete(@RequestParam("id") String id) {
+		repository.delete(id);
 		counterService.countDeletedPersons();
 	}
 	
 	@PutMapping
 	public void update(@RequestBody Person p) {
-		Person person = persons.stream().filter(it -> it.getId().equals(p.getId())).findFirst().get();
-		persons.set(persons.indexOf(person), p);
+		repository.save(p);
 	}
 	
 }
