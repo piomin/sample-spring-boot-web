@@ -30,3 +30,5 @@ spring:
       database: microservices
       username: micro 
       password: micro
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration
