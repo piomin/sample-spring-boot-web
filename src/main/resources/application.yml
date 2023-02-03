@@ -12,7 +12,9 @@ logging:
 #  level:
 #    org.springframework.web: DEBUG
   file: app.log
-  
+
+springdoc.show-actuator: true
+
 management:
   security:
     enabled: false
