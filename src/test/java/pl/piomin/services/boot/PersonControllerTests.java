@@ -7,6 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import pl.piomin.services.boot.model.Person;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -21,8 +23,7 @@ public class PersonControllerTests {
         assertNotNull(person);
         assertEquals(1, person.getId());
 
-        person = restTemplate.getForObject("/person/{}", Person.class, 1);
-        assertNotNull(person);
-        assertEquals(1, person.getId());
+        Person[] persons = restTemplate.getForObject("/person", Person[].class);
+        assertTrue(persons.length > 0);
     }
 }
