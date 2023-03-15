@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/person")
 public class PersonController {
 
-	private List<Person> persons = new ArrayList<>();
+	private final List<Person> persons = new ArrayList<>();
 	
 	@Autowired
 	PersonCounterService counterService;
@@ -25,7 +25,7 @@ public class PersonController {
 	
 	@GetMapping("/{id}")
 	public Person findById(@PathVariable("id") Long id) {
-		return persons.stream().filter(it -> it.getId().equals(id)).findFirst().get();
+		return persons.stream().filter(it -> it.getId().equals(id)).findFirst().orElseThrow();
 	}
 	
 	@PostMapping
@@ -38,14 +38,14 @@ public class PersonController {
 	
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable("id") Long id) {
-		List<Person> p = persons.stream().filter(it -> it.getId().equals(id)).collect(Collectors.toList());
-		persons.removeAll(p);
+		Person p = persons.stream().filter(it -> it.getId().equals(id)).findFirst().orElseThrow();
+		persons.remove(p);
 		counterService.countDeletedPersons();
 	}
 	
 	@PutMapping
 	public void update(@RequestBody Person p) {
-		Person person = persons.stream().filter(it -> it.getId().equals(p.getId())).findFirst().get();
+		Person person = persons.stream().filter(it -> it.getId().equals(p.getId())).findFirst().orElseThrow();
 		persons.set(persons.indexOf(person), p);
 	}
 	
