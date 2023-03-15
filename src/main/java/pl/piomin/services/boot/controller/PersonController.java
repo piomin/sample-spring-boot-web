@@ -1,21 +1,13 @@
 package pl.piomin.services.boot.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import pl.piomin.services.boot.model.Person;
+import pl.piomin.services.boot.service.PersonCounterService;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import pl.piomin.services.boot.model.Person;
-import pl.piomin.services.boot.service.PersonCounterService;
 
 @RestController
 @RequestMapping("/person")
@@ -32,7 +24,7 @@ public class PersonController {
 	}
 	
 	@GetMapping("/{id}")
-	public Person findById(@RequestParam("id") Long id) {
+	public Person findById(@PathVariable("id") Long id) {
 		return persons.stream().filter(it -> it.getId().equals(id)).findFirst().orElseThrow();
 	}
 	
@@ -45,7 +37,7 @@ public class PersonController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public void delete(@RequestParam("id") Long id) {
+	public void delete(@PathVariable("id") Long id) {
 		Person p = persons.stream().filter(it -> it.getId().equals(id)).findFirst().orElseThrow();
 		persons.remove(p);
 		counterService.countDeletedPersons();
