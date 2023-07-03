@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
+    <springProperty name="name" source="spring.application.name" />
+
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>
-                %d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n
-<!--                %clr(%d{HH:mm:ss.SSS}){blue} %clr(-&#45;&#45;){faint} %clr([%15.15t]){yellow} %clr(:){red} %clr(%m){faint}%n-->
+                %d{HH:mm:ss.SSS} %-5level %logger{36} %X{X-Request-ID} - %msg%n
             </pattern>
         </encoder>
     </appender>
@@ -16,10 +17,19 @@
         </http>
         <format>
             <label>
-                <pattern>app=my-app,host=${HOSTNAME},level=%level,X-Request-Id=%mdc{X-Request-Id:null}</pattern>
+                <pattern>app=${name},host=${HOSTNAME},level=%level</pattern>
+                <readMarkers>true</readMarkers>
             </label>
             <message>
-                <pattern>l=%level h=${HOSTNAME} c=%logger{20} t=%thread | %msg %ex</pattern>
+                <pattern>
+{
+   "level":"%level",
+   "class":"%logger{36}",
+   "thread":"%thread",
+   "message": "%message",
+   "requestId": "%X{X-Request-ID}"
+}
+                </pattern>
             </message>
         </format>
     </appender>

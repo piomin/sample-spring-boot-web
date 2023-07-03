@@ -1,5 +1,8 @@
 package pl.piomin.services.boot.controller;
 
+import com.github.loki4j.slf4j.marker.LabelMarker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.piomin.services.boot.model.Person;
@@ -13,6 +16,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/person")
 public class PersonController {
 
+    private final Logger LOG = LoggerFactory.getLogger(PersonController.class);
     private final List<Person> persons = new ArrayList<>();
 
     @Autowired
@@ -25,9 +29,12 @@ public class PersonController {
 
     @GetMapping("/{id}")
     public Person findById(@PathVariable("id") Long id) {
-        return persons.stream().filter(it -> it.getId().equals(id))
+        Person p = persons.stream().filter(it -> it.getId().equals(id))
                 .findFirst()
                 .orElseThrow();
+        LabelMarker marker = LabelMarker.of("personId", () -> String.valueOf(p.getId()));
+        LOG.info(marker, "Person successfully found");
+        return p;
     }
 
     @GetMapping("/name/{firstName}/{lastName}")
@@ -41,6 +48,8 @@ public class PersonController {
     @PostMapping
     public Person add(@RequestBody Person p) {
         p.setId((long) (persons.size() + 1));
+        LabelMarker marker = LabelMarker.of("personId", () -> String.valueOf(p.getId()));
+        LOG.info(marker, "New person successfully added");
         persons.add(p);
         counterService.countNewPersons();
         return p;
