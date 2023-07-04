@@ -10,10 +10,9 @@ import pl.piomin.services.boot.service.PersonCounterService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("/persons")
 public class PersonController {
 
     private final Logger LOG = LoggerFactory.getLogger(PersonController.class);
@@ -38,7 +37,7 @@ public class PersonController {
     }
 
     @GetMapping("/name/{firstName}/{lastName}")
-    public List<Person> findById(@PathVariable("firstName") String firstName,
+    public List<Person> findByName(@PathVariable("firstName") String firstName,
                                  @PathVariable("lastName") String lastName) {
         return persons.stream().filter(it -> it.getFirstName().equals(firstName)
                         && it.getLastName().equals(lastName))
@@ -59,13 +58,20 @@ public class PersonController {
     public void delete(@PathVariable("id") Long id) {
         Person p = persons.stream().filter(it -> it.getId().equals(id)).findFirst().orElseThrow();
         persons.remove(p);
+        LabelMarker marker = LabelMarker.of("personId", () -> String.valueOf(id));
+        LOG.info(marker, "Person successfully removed");
         counterService.countDeletedPersons();
     }
 
     @PutMapping
     public void update(@RequestBody Person p) {
-        Person person = persons.stream().filter(it -> it.getId().equals(p.getId())).findFirst().orElseThrow();
+        Person person = persons.stream()
+                .filter(it -> it.getId().equals(p.getId()))
+                .findFirst()
+                .orElseThrow();
         persons.set(persons.indexOf(person), p);
+        LabelMarker marker = LabelMarker.of("personId", () -> String.valueOf(p.getId()));
+        LOG.info(marker, "Person successfully updated");
     }
 
 }
