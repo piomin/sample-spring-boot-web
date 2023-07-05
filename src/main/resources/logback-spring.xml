@@ -6,7 +6,7 @@
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>
-                %d{HH:mm:ss.SSS} %-5level %logger{36} %X{X-Request-ID} - %msg%n
+                %d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n
             </pattern>
         </encoder>
     </appender>
@@ -21,15 +21,7 @@
                 <readMarkers>true</readMarkers>
             </label>
             <message>
-                <pattern>
-{
-   "level":"%level",
-   "class":"%logger{36}",
-   "thread":"%thread",
-   "message": "%message",
-   "requestId": "%X{X-Request-ID}"
-}
-                </pattern>
+                <pattern>{"level":"%level", "class":"%logger{36}", "thread":"%thread", "message": "%message", "requestId": "%X{X-Request-ID}"}</pattern>
             </message>
             <sortByTime>true</sortByTime>
         </format>
