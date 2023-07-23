@@ -19,11 +19,11 @@ public class PersonControllerTests {
 
     @Test
     void addAndGet() {
-        Person person = restTemplate.postForObject("/person", Instancio.create(Person.class), Person.class);
+        Person person = restTemplate.postForObject("/persons", Instancio.create(Person.class), Person.class);
         assertNotNull(person);
         assertEquals(1, person.getId());
 
-        Person[] persons = restTemplate.getForObject("/person", Person[].class);
+        Person[] persons = restTemplate.getForObject("/persons", Person[].class);
         assertTrue(persons.length > 0);
     }
 }
