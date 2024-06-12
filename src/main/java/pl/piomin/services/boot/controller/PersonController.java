@@ -63,7 +63,7 @@ public class PersonController {
         counterService.countDeletedPersons();
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public void update(@RequestBody Person p) {
         Person person = persons.stream()
                 .filter(it -> it.getId().equals(p.getId()))
