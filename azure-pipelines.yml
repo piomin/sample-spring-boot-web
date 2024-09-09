@@ -14,7 +14,7 @@ steps:
   inputs:
     connectionType: 'OpenShift Connection Service'
     openshiftService: 'piomin-ocp'
-    version: '4.10'
+    version: 'v4.10'
 - task: oc-cmd@3
   inputs:
     connectionType: 'OpenShift Connection Service'
