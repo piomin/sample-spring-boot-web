@@ -15,30 +15,35 @@ steps:
     connectionType: 'OpenShift Connection Service'
     openshiftService: 'piomin-ocp'
     cmd: 'oc project myapp'
+    version: '4.2'
 - task: oc-cmd@3
   inputs:
     connectionType: 'OpenShift Connection Service'
     openshiftService: 'piomin-ocp'
     cmd: 'oc new-app https://github.com/piomin/sample-spring-boot-web.git'
     ignoreFlag: true
+    version: '4.2'
 - task: oc-cmd@3
   inputs:
     connectionType: 'OpenShift Connection Service'
     openshiftService: 'piomin-ocp'
     cmd: 'oc expose svc simple-app'
     ignoreFlag: true
+    version: '4.2'
   displayName: Create route
 - task: oc-cmd@3
   inputs:
     connectionType: 'OpenShift Connection Service'
     openshiftService: 'piomin-ocp'
     cmd: 'oc start-build simple-app --follow'
+    version: '4.2'
   displayName: Start new build
 - task: oc-cmd@3
   inputs:
     connectionType: 'OpenShift Connection Service'
     openshiftService: 'piomin-ocp'
     cmd: 'oc status'
+    version: '4.2'
 
 
 
