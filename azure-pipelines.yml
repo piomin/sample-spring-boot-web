@@ -1,0 +1,46 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: oc-cmd@3
+  inputs:
+    connectionType: 'OpenShift Connection Service'
+    openshiftService: 'piomin-ocp'
+    version: '4.15'
+    cmd: 'oc project myapp'
+- task: oc-cmd@3
+  inputs:
+    connectionType: 'OpenShift Connection Service'
+    openshiftService: 'piomin-ocp'
+    version: '4.15'
+    cmd: 'oc new-app https://github.com/piomin/sample-spring-boot-web.git'
+    ignoreFlag: true
+- task: oc-cmd@3
+  inputs:
+    connectionType: 'OpenShift Connection Service'
+    openshiftService: 'piomin-ocp'
+    version: '4.15'
+    cmd: 'oc expose svc simple-app'
+    ignoreFlag: true
+  displayName: Create route
+- task: oc-cmd@3
+  inputs:
+    connectionType: 'OpenShift Connection Service'
+    openshiftService: 'piomin-ocp'
+    version: '4.15'
+    cmd: 'oc start-build simple-app --follow'
+  displayName: Start new build
+- task: oc-cmd@3
+  inputs:
+    connectionType: 'OpenShift Connection Service'
+    openshiftService: 'piomin-ocp'
+    version: '4.15'
+    cmd: 'oc status'
