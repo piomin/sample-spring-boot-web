@@ -22,10 +22,12 @@ steps:
   inputs:
     script: 'oc new-app openjdk-21~https://github.com/piomin/sample-spring-boot-web.git'
   displayName: Create app
+  continueOnError: true
 - task: CmdLine@2
   inputs:
     script: 'oc expose svc sample-spring-boot-web'
   displayName: Create route
+  continueOnError: true
 
 - task: CmdLine@2
   inputs:
@@ -34,6 +36,10 @@ steps:
 - task: CmdLine@2
   inputs:
     script: 'oc status'
+  displayName: Check status
+
+
+
 
 
 
