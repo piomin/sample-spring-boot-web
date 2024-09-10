@@ -10,6 +10,15 @@ pool:
   name: Default
 
 steps:
+- task: CmdLine@2
+  inputs:
+    script: 'oc version'
+- task: oc-cmd@3
+  inputs:
+    connectionType: 'OpenShift Connection Service'
+    openshiftService: 'piomin-ocp'
+    cmd: 'oc project'
+    uselocalOc: true
 - task: oc-cmd@3
   inputs:
     connectionType: 'OpenShift Connection Service'
