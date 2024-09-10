@@ -37,7 +37,12 @@ steps:
   inputs:
     script: 'oc status'
   displayName: Check status
-
+- task: oc-cmd@3
+  inputs:
+    connectionType: 'OpenShift Connection Service'
+    openshiftService: 'piomin-ocp'
+    cmd: 'oc status'
+    uselocalOc: true
 
 
 
