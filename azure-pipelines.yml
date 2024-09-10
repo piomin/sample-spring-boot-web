@@ -15,13 +15,14 @@ steps:
     connectionType: 'OpenShift Connection Service'
     openshiftService: 'piomin-ocp'
     cmd: 'oc project myapp'
+    uselocalOc: true
 - task: oc-cmd@3
   inputs:
     connectionType: 'OpenShift Connection Service'
     openshiftService: 'piomin-ocp'
     cmd: 'oc new-app openjdk-21~https://github.com/piomin/sample-spring-boot-web.git'
     ignoreFlag: true
-    version: '4.3'
+    uselocalOc: true
 - task: oc-cmd@3
   inputs:
     connectionType: 'OpenShift Connection Service'
