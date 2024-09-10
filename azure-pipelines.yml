@@ -12,7 +12,7 @@ pool:
 steps:
 - task: CmdLine@2
   inputs:
-    script: 'oc login https://172.30.0.1:443 -u kubeadmin -p $(OCP_PASSWORD)'
+    script: 'oc login https://172.30.0.1:443 -u kubeadmin -p $(OCP_PASSWORD) --insecure-skip-tls-verify=true'
   displayName: Login to OpenShift
 - task: CmdLine@2
   inputs:
