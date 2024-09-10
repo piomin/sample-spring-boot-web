@@ -12,47 +12,28 @@ pool:
 steps:
 - task: CmdLine@2
   inputs:
-    script: 'oc version'
-- task: oc-cmd@3
+    script: 'oc login https://172.30.0.1:443 -u kubeadmin -p $(OCP_PASSWORD)'
+  displayName: Login to OpenShift
+- task: CmdLine@2
   inputs:
-    connectionType: 'OpenShift Connection Service'
-    openshiftService: 'piomin-ocp'
-    cmd: 'oc project'
-    uselocalOc: true
-- task: oc-cmd@3
+    script: 'oc project myapp'
+  displayName: Switch to project
+- task: CmdLine@2
   inputs:
-    connectionType: 'OpenShift Connection Service'
-    openshiftService: 'piomin-ocp'
-    cmd: 'oc project myapp'
-    uselocalOc: true
-- task: oc-cmd@3
+    script: 'oc new-app openjdk-21~https://github.com/piomin/sample-spring-boot-web.git'
+  displayName: Create app
+- task: CmdLine@2
   inputs:
-    connectionType: 'OpenShift Connection Service'
-    openshiftService: 'piomin-ocp'
-    cmd: 'oc new-app openjdk-21~https://github.com/piomin/sample-spring-boot-web.git'
-    ignoreFlag: true
-    uselocalOc: true
-- task: oc-cmd@3
-  inputs:
-    connectionType: 'OpenShift Connection Service'
-    openshiftService: 'piomin-ocp'
-    cmd: 'oc expose svc simple-app'
-    ignoreFlag: true
-    version: '4.3'
+    script: 'oc expose svc sample-spring-boot-web'
   displayName: Create route
-- task: oc-cmd@3
+
+- task: CmdLine@2
   inputs:
-    connectionType: 'OpenShift Connection Service'
-    openshiftService: 'piomin-ocp'
-    cmd: 'oc start-build simple-app --follow'
-    version: '4.3'
-  displayName: Start new build
-- task: oc-cmd@3
+    script: 'oc start-build sample-spring-boot-web --follow'
+  displayName: Start build
+- task: CmdLine@2
   inputs:
-    connectionType: 'OpenShift Connection Service'
-    openshiftService: 'piomin-ocp'
-    cmd: 'oc status'
-    version: '4.3'
+    script: 'oc status'
 
 
 
