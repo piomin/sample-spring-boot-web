@@ -20,29 +20,12 @@ steps:
   displayName: Switch to project
 - task: CmdLine@2
   inputs:
-    script: 'oc new-app openjdk-21~https://github.com/piomin/sample-spring-boot-web.git'
-  displayName: Create app
-  continueOnError: true
-- task: CmdLine@2
-  inputs:
-    script: 'oc expose svc sample-spring-boot-web'
-  displayName: Create route
-  continueOnError: true
-
-- task: CmdLine@2
-  inputs:
     script: 'oc start-build sample-spring-boot-web --follow'
   displayName: Start build
 - task: CmdLine@2
   inputs:
     script: 'oc status'
   displayName: Check status
-- task: oc-cmd@3
-  inputs:
-    connectionType: 'OpenShift Connection Service'
-    openshiftService: 'piomin-ocp'
-    cmd: 'oc status'
-    uselocalOc: true
 
 
 
