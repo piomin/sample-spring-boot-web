@@ -20,10 +20,10 @@ steps:
   displayName: Switch to project
 - task: CmdLine@2
   inputs:
-    script: 'oc start-build sample-spring-boot-web --follow'
+    script: 'oc start-build sample-spring-boot-web -w'
     failOnStderr: true
   displayName: Start build
-  timeoutInMinutes: 2
+  timeoutInMinutes: 5
 - task: CmdLine@2
   inputs:
     script: 'oc status'
