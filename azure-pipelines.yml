@@ -20,7 +20,7 @@ steps:
   displayName: Switch to project
 - task: CmdLine@2
   inputs:
-    script: 'oc new-build openjdk-21~https://github.com/piomin/sample-spring-boot-web.git --name sample-spring-boot-web-$(Build.BuildId) --to-docker=true --to=image-registry.openshift-image-registry.svc:5000/myapp/sample-spring-boot-web:$(Build.BuildId)'
+    script: 'oc new-build openjdk-21:stable~https://github.com/piomin/sample-spring-boot-web.git --name sample-spring-boot-web-$(Build.BuildId) --to-docker=true --to=image-registry.openshift-image-registry.svc:5000/myapp/sample-spring-boot-web:$(Build.BuildId)'
   displayName: Create build
 - task: CmdLine@2
   inputs:
