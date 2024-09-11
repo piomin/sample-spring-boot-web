@@ -1,0 +1,37 @@
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: sample-spring-boot-web-tmpl
+objects:
+  - kind: BuildConfig
+    apiVersion: build.openshift.io/v1
+    metadata:
+      name: sample-spring-boot-web-bc
+      labels:
+        build: sample-spring-boot-web-bc
+    spec:
+      output:
+        to:
+          kind: DockerImage
+          name: 'image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/sample-spring-boot-web:${IMAGE_TAG}'
+      strategy:
+        type: Source
+        sourceStrategy:
+          from:
+            kind: ImageStreamTag
+            namespace: openshift
+            name: 'openjdk-21:stable'
+      source:
+        type: Git
+        git:
+          uri: 'https://github.com/piomin/sample-spring-boot-web.git'
+parameters:
+  - name: IMAGE_TAG
+    displayName: Image tag
+    description: The output image tag
+    value: v1.0
+    required: true
+  - name: NAMESPACE
+    displayName: Namespace
+    description: The OpenShift Namespace where the ImageStream resides
+    value: openshift
