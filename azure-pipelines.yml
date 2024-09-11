@@ -22,6 +22,7 @@ steps:
   inputs:
     script: 'oc start-build sample-spring-boot-web --follow'
   displayName: Start build
+  timeoutInMinutes: 2
 - task: CmdLine@2
   inputs:
     script: 'oc status'
