@@ -1,0 +1,24 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: sample-spring-boot-web
+  title: sample-spring-boot-web
+  annotations:
+    github.com/project-slug: piomin/sample-spring-boot-web
+    sonarqube.org/project-key: piomin_sample-spring-boot-web
+    backstage.io/kubernetes-id: sample-spring-boot-web
+    dev.azure.com/project-repo: piomin/sample-spring-boot-web
+    prometheus.io/rule: container_memory_usage_bytes{pod=~"sample-spring-boot-web-.*"}|pod,rate(container_cpu_usage_seconds_total{pod=~"sample-spring-boot-web-.*"}[5m])|pod
+  labels:
+    backstage.io/kubernetes-id: sample-spring-boot-web
+  tags:
+    - spring-boot
+    - java
+    - maven
+    - azure-devops
+    - renovate
+    - sonarqube
+spec:
+  type: service
+  owner: piomin
+  lifecycle: experimental
