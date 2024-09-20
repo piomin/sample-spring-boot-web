@@ -9,6 +9,7 @@ metadata:
     backstage.io/kubernetes-id: sample-spring-boot-web
     dev.azure.com/project-repo: piomin/sample-spring-boot-web
     dev.azure.com/build-definition: piomin.sample-spring-boot-web
+    dev.azure.com/project: piomin
     prometheus.io/rule: container_memory_usage_bytes{pod=~"sample-spring-boot-web-.*"}|pod,rate(container_cpu_usage_seconds_total{pod=~"sample-spring-boot-web-.*"}[5m])|pod
   labels:
     backstage.io/kubernetes-id: sample-spring-boot-web
