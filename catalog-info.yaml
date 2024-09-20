@@ -7,6 +7,7 @@ metadata:
     github.com/project-slug: piomin/sample-spring-boot-web
     sonarqube.org/project-key: piomin_sample-spring-boot-web
     backstage.io/kubernetes-id: sample-spring-boot-web
+    backstage.io/kubernetes-namespace: myapp
     dev.azure.com/project-repo: piomin/sample-spring-boot-web
     dev.azure.com/build-definition: piomin.sample-spring-boot-web
     dev.azure.com/project: piomin
