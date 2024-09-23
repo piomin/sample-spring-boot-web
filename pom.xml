@@ -81,6 +81,12 @@
                         </configuration>
                     </execution>
                 </executions>
+<!--                enable for podman-->
+<!--                <configuration>-->
+<!--                    <docker>-->
+<!--                        <host>unix:///var/folders/fz/26xv826j79s_x1wn194k6vn00000gn/T/podman/podman-machine-default-api.sock</host>-->
+<!--                    </docker>-->
+<!--                </configuration>-->
             </plugin>
             <plugin>
                 <groupId>pl.project13.maven</groupId>
