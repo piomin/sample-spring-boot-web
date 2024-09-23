@@ -25,6 +25,8 @@ spec:
   type: service
   owner: piomin
   lifecycle: experimental
+  providesApis:
+    - sample-spring-boot-web
 ---
 apiVersion: backstage.io/v1alpha1
 kind: API
