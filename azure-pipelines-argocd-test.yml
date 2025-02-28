@@ -12,7 +12,7 @@ pool:
 
 steps:
 - checkout: self
-- checkout: https://github.com/piomin/openshift-cluster-config.git
+- checkout: git://github.com/piomin/openshift-cluster-config.git
 
 - task: CmdLine@2
   inputs:
