@@ -11,13 +11,12 @@ pool:
   name: Azure Pipelines
 
 steps:
-- checkout: self
-- checkout: git://piomin/openshift-cluster-config
-  persistCredentials: true
 
 - task: CmdLine@2
   inputs:
-    script: 'ls -la'
+    script: |
+      git clone https://github.com/piomin/openshift-cluster-config.git
+      ls -la
   displayName: List catalog
     
 # - task: CmdLine@2
