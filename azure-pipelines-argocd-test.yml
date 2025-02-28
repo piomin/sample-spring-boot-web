@@ -12,7 +12,8 @@ pool:
 
 steps:
 - checkout: self
-- checkout: git://github.com/piomin/openshift-cluster-config.git
+- checkout: git://piomin/openshift-cluster-config.git
+  persistCredentials: true
 
 - task: CmdLine@2
   inputs:
