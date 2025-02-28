@@ -17,7 +17,7 @@ steps:
     script: |
       git clone https://github.com/piomin/openshift-cluster-config.git
       cd openshift-cluster-config
-      sed -i 's/app\.version: .*/app.version: '"1.5.2"'/' apps/pminkows/values-sample-kotlin-spring-test.yaml
+      yq e '.app.version = "1.5.2"' -i
       cat apps/pminkows/values-sample-kotlin-spring-test.yaml
   displayName: List catalog
     
