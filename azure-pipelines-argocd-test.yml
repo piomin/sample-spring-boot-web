@@ -1,0 +1,44 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  # name: Default
+  name: Azure Pipelines
+
+steps:
+- checkout: self
+- checkout: https://github.com/piomin/openshift-cluster-config.git
+
+- task: CmdLine@2
+  inputs:
+    script: 'ls -la'
+  displayName: List catalog
+    
+# - task: CmdLine@2
+#   inputs:
+#     script: 'oc login https://172.30.0.1:443 -u kubeadmin -p $(OCP_PASSWORD) --insecure-skip-tls-verify=true'
+#   displayName: Login to OpenShift
+# - task: CmdLine@2
+#   inputs:
+#     script: 'oc project myapp'
+#   displayName: Switch to project
+# - task: CmdLine@2
+#   inputs:
+#     script: 'oc process -f ocp/ci.yaml -o yaml -p IMAGE_TAG=v1.0-$(Build.BuildId) -p NAMESPACE=myapp -p BUILDER_IMAGE=ubi8-openjdk-21:1.18 | oc apply -f -'
+#   displayName: Create build
+# - task: CmdLine@2
+#   inputs:
+#     script: 'oc start-build sample-spring-boot-web-bc -w'
+#     failOnStderr: true
+#   displayName: Start build
+#   timeoutInMinutes: 5
+# - task: vsix-argocd-task@1
+#   inputs:
+#     ArgoCDService: 'argocd'
+#     argocdApplication: '{ Value : "sample-spring-boot-web-test", DisplayValue : "sample-spring-boot-web-test" }'
+#     argocdCommand: 'sync'
