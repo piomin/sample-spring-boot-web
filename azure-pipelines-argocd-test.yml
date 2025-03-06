@@ -61,7 +61,7 @@ stages:
               inputs:
                 packageType: 'maven'
                 feed: 'pminkows'
-                view: 'Local'
+                view: 'Release'
                 definition: 'pl.piomin.services:sample-spring-boot-web'
                 version: '1.0-SNAPSHOT'
                 downloadPath: '$(System.ArtifactsDirectory)'
