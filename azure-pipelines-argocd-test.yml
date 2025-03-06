@@ -63,7 +63,7 @@ stages:
                 feed: 'pminkows'
                 view: 'Release'
                 definition: 'pl.piomin.services:sample-spring-boot-web'
-                version: '1.0-SNAPSHOT'
+                version: '1.0'
                 downloadPath: '$(System.ArtifactsDirectory)'
             - script: 'ls -la $(System.ArtifactsDirectory)'
             
