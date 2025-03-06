@@ -63,7 +63,7 @@ stages:
                 feed: 'pminkows'
                 view: 'Release'
                 definition: 'pl.piomin.services:sample-spring-boot-web'
-                version: '1.0'
+                version: '1.1'
                 downloadPath: '$(System.ArtifactsDirectory)'
             - script: 'ls -la $(System.ArtifactsDirectory)'
             
@@ -74,7 +74,7 @@ stages:
                 AzureSpringCloud: $(serviceName)
                 AppName: 'sample-spring-boot-web'
                 DeploymentName: default
-                Package: '$(System.ArtifactsDirectory)/sample-spring-boot-web-1.0.jar'    
+                Package: '$(System.ArtifactsDirectory)/sample-spring-boot-web-1.1.jar'
 # - task: CmdLine@2
 #   inputs:
 #     script: 'oc login https://172.30.0.1:443 -u kubeadmin -p $(OCP_PASSWORD) --insecure-skip-tls-verify=true'
