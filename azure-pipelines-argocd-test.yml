@@ -15,29 +15,66 @@ resources:
     - webhook: MyHook
       connection: MyHookConnection
 
-steps:
-
-- task: Maven@4
-  inputs:
-    mavenPomFile: 'pom.xml'
-    goals: 'clean package'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: 1.21
-    mavenVersionOption: 'Default'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    sonarQubeRunAnalysis: false
-- task: CmdLine@2
-  inputs:
-    script: |
-      git clone https://github.com/piomin/openshift-cluster-config.git
-      cd openshift-cluster-config
-      yq e '.app.version = "1.5.2"' -i apps/pminkows/values-sample-kotlin-spring-test.yaml
-      cat apps/pminkows/values-sample-kotlin-spring-test.yaml
-  displayName: List catalog
-    
+stages:
+- stage: Build_Test
+  jobs:
+  - job: Maven_Package
+    steps:
+    - task: MavenAuthenticate@0
+      inputs:
+        artifactsFeeds: 'pminkows'
+        mavenServiceConnections: 'pminkows'
+      displayName: 'Maven Authenticate'
+    - task: Maven@4
+      inputs:
+        mavenPomFile: 'pom.xml'
+        goals: 'clean package'
+        publishJUnitResults: true
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: 1.21
+        mavenVersionOption: 'Default'
+        mavenAuthenticateFeed: false
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: false
+      displayName: 'Maven Build'
+    - task: CmdLine@2
+      inputs:
+        script: |
+          git clone https://github.com/piomin/openshift-cluster-config.git
+          cd openshift-cluster-config
+          yq e '.app.version = "1.5.2"' -i apps/pminkows/values-sample-kotlin-spring-test.yaml
+          cat apps/pminkows/values-sample-kotlin-spring-test.yaml
+      displayName: List catalog
+- stage: Deploy_Stage
+  dependsOn: Build_Test
+  condition: succeeded()
+  jobs:
+    - deployment: Deployment_Staging
+      environment:
+        name: staging
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: DownloadPackage@1
+              inputs:
+                packageType: 'maven'
+                feed: 'pminkows'
+                view: 'Local'
+                definition: 'pl.piomin.services:sample-spring-boot-web'
+                version: '1.0-SNAPSHOT'
+                downloadPath: '$(System.ArtifactsDirectory)'
+            - script: 'ls -la $(System.ArtifactsDirectory)'
+            
+            - task: AzureSpringCloud@0
+              inputs:
+                azureSubscription: $(subscription)
+                Action: 'Deploy'
+                AzureSpringCloud: $(serviceName)
+                AppName: 'sample-spring-boot-web'
+                DeploymentName: dep1
+                Package: '$(System.ArtifactsDirectory)/sample-spring-boot-web-1.0-SNAPSHOT.jar'    
 # - task: CmdLine@2
 #   inputs:
 #     script: 'oc login https://172.30.0.1:443 -u kubeadmin -p $(OCP_PASSWORD) --insecure-skip-tls-verify=true'
