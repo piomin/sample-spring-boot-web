@@ -117,4 +117,34 @@
         </plugins>
     </build>
 
+      <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+        <repository>
+            <id>pminkows</id>
+            <url>https://pkgs.dev.azure.com/pminkows/_packaging/pminkows/Maven/v1</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>pminkows</id>
+            <url>https://pkgs.dev.azure.com/pminkows/_packaging/pminkows/Maven/v1</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </distributionManagement>
+
 </project>
