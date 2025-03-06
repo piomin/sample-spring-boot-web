@@ -74,7 +74,7 @@ stages:
                 AzureSpringCloud: $(serviceName)
                 AppName: 'sample-spring-boot-web'
                 DeploymentName: default
-                Package: '$(System.ArtifactsDirectory)/sample-spring-boot-web-1.0-SNAPSHOT.jar'    
+                Package: '$(System.ArtifactsDirectory)/sample-spring-boot-web-1.0.jar'    
 # - task: CmdLine@2
 #   inputs:
 #     script: 'oc login https://172.30.0.1:443 -u kubeadmin -p $(OCP_PASSWORD) --insecure-skip-tls-verify=true'
