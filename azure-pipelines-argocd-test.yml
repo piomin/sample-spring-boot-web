@@ -73,7 +73,7 @@ stages:
                 Action: 'Deploy'
                 AzureSpringCloud: $(serviceName)
                 AppName: 'sample-spring-boot-web'
-                DeploymentName: dep1
+                DeploymentName: default
                 Package: '$(System.ArtifactsDirectory)/sample-spring-boot-web-1.0-SNAPSHOT.jar'    
 # - task: CmdLine@2
 #   inputs:
