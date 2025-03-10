@@ -12,15 +12,20 @@ pool:
 
 steps:
 - checkout: self
-- checkout: git://pminkows
+- checkout: git://gitops
   persistCredentials: true
   fetchDepth: 0
 
 - task: CmdLine@2
   inputs:
     script: |
-      cd openshift-cluster-config
+      cd gitops
       git status
+      yq e '.image.tag = "1.0.1"' -i apps/basic/test/values.yaml
+      cat apps/basic/test/values.yaml
+      git add --all
+      git commit -m "v1.0.1"
+      git push origin main
   displayName: List catalog
     
 # - task: CmdLine@2
