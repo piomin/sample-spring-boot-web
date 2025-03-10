@@ -14,10 +14,13 @@ steps:
 - checkout: self
 - checkout: git://piomin/openshift-cluster-config
   persistCredentials: true
+  fetchDepth: 0
 
 - task: CmdLine@2
   inputs:
-    script: 'ls -la'
+    script: |
+      cd openshift-cluster-config
+      git status
   displayName: List catalog
     
 # - task: CmdLine@2
