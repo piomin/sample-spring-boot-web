@@ -12,7 +12,7 @@ pool:
 
 steps:
 - checkout: self
-- checkout: git://piomin/openshift-cluster-config
+- checkout: git://pminkows
   persistCredentials: true
   fetchDepth: 0
 
