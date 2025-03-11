@@ -28,7 +28,8 @@ steps:
       cat apps/basic/test/values.yaml
       git add apps/basic/test/values.yaml
       git commit -m "v1.0.1"
-      git push origin main https://pminkows@dev.azure.com/pminkows/pminkows/_git/gitops
+      git remote -v
+      git push origin main
   displayName: List catalog
     
 # - task: CmdLine@2
