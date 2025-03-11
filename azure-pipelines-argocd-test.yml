@@ -16,10 +16,11 @@ steps:
   persistCredentials: true
   fetchDepth: 0
 
+
 - task: CmdLine@2
   inputs:
     script: |
-      git config --global user.email "piotr.minkowski@gmal.com"
+      git config --global user.email "piotr.minkowski@gmail.com"
       git config --global user.name "Piotr Minkowski"
       cd gitops
       git status
@@ -27,7 +28,7 @@ steps:
       cat apps/basic/test/values.yaml
       git add apps/basic/test/values.yaml
       git commit -m "v1.0.1"
-      git push origin main
+      git push origin main https://pminkows@dev.azure.com/pminkows/pminkows/_git/gitops
   displayName: List catalog
     
 # - task: CmdLine@2
