@@ -29,8 +29,10 @@ steps:
       git add apps/basic/test/values.yaml
       git commit -m "v1.0.1"
       git remote -v
-      git push origin main
+      git push https://$(System.AccessToken)@dev.azure.com/pminkows/pminkows/_git/gitops main
   displayName: List catalog
+  env:
+    SYSTEM_ACCESSTOKEN: $(System.AccessToken)
     
 # - task: CmdLine@2
 #   inputs:
