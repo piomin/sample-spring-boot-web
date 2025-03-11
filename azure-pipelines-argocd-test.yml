@@ -6,6 +6,9 @@
 trigger:
 - master
 
+variables:
+  version: v1.0.1
+
 pool:
   # name: Default
   name: Azure Pipelines
@@ -24,10 +27,10 @@ steps:
       git config --global user.name "Piotr Minkowski"
       cd gitops
       git checkout main
-      yq e '.image.tag = "1.0.1"' -i apps/basic/test/values.yaml
+      yq e '.image.tag = "$(version)"' -i apps/basic/test/values.yaml
       cat apps/basic/test/values.yaml
       git add apps/basic/test/values.yaml
-      git commit -m "v1.0.1"
+      git commit -m "$(version)"
       git remote -v
       git push https://$(System.AccessToken)@dev.azure.com/pminkows/pminkows/_git/gitops main
   displayName: List catalog
