@@ -15,27 +15,31 @@ pool:
 
 steps:
 - checkout: self
-- checkout: git://gitops
-  persistCredentials: true
-  fetchDepth: 0
+# - checkout: git://gitops
+#   persistCredentials: true
+#   fetchDepth: 0
 
-
-- task: CmdLine@2
+- task: vsix-argocd-task@1
   inputs:
-    script: |
-      git config --global user.email "piotr.minkowski@gmail.com"
-      git config --global user.name "Piotr Minkowski"
-      cd gitops
-      git checkout main
-      yq e '.image.tag = "$(version)"' -i apps/basic/test/values.yaml
-      cat apps/basic/test/values.yaml
-      git add apps/basic/test/values.yaml
-      git commit -m "$(version)"
-      git remote -v
-      git push https://$(System.AccessToken)@dev.azure.com/pminkows/pminkows/_git/gitops main
-  displayName: List catalog
-  env:
-    SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+    ArgoCDService: 'argocd'
+    argocdApplication: 'simple'
+    argocdCommand: 'sync'
+# - task: CmdLine@2
+#   inputs:
+#     script: |
+#       git config --global user.email "piotr.minkowski@gmail.com"
+#       git config --global user.name "Piotr Minkowski"
+#       cd gitops
+#       git checkout main
+#       yq e '.image.tag = "$(version)"' -i apps/basic/test/values.yaml
+#       cat apps/basic/test/values.yaml
+#       git add apps/basic/test/values.yaml
+#       git commit -m "$(version)"
+#       git remote -v
+#       git push https://$(System.AccessToken)@dev.azure.com/pminkows/pminkows/_git/gitops main
+#   displayName: List catalog
+#   env:
+#     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
     
 # - task: CmdLine@2
 #   inputs:
