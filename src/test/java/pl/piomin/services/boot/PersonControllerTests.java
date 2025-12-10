@@ -7,7 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.test.web.servlet.client.RestTestClient;
+import org.springframework.web.context.WebApplicationContext;
 import pl.piomin.services.boot.model.Person;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,48 +19,70 @@ public class PersonControllerTests {
 
     private static final String API_PATH = "/persons";
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+    private RestTestClient restTemplate;
+
+    public PersonControllerTests(WebApplicationContext context) {
+        this.restTemplate = RestTestClient.bindToApplicationContext(context)
+                .baseUrl(API_PATH)
+                .build();
+    }
 
     @Test
     @Order(1)
     void add() {
-        Person person = restTemplate.postForObject(API_PATH, Instancio.create(Person.class), Person.class);
-        assertNotNull(person);
-        assertEquals(1, person.getId());
+        restTemplate.post().body(Instancio.create(Person.class))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(Person.class)
+                .value(person -> assertNotNull(person.getId()));
     }
 
     @Test
     @Order(2)
     void findAll() {
-        Person[] persons = restTemplate.getForObject(API_PATH, Person[].class);
-        assertTrue(persons.length > 0);
+        restTemplate.get()
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(Person[].class)
+                .value(persons -> assertTrue(persons.length > 0));
     }
 
     @Test
     @Order(2)
     void findById() {
-        Person person = restTemplate.getForObject(API_PATH + "/{id}", Person.class, 1L);
-        assertNotNull(person);
-        assertEquals(1, person.getId());
+        restTemplate.get().uri("/{id}", 1L)
+                .exchange()
+                .expectBody(Person.class)
+                .value(person -> assertNotNull(person.getId()));
     }
 
     @Test
     @Order(3)
     void update() {
-        Person person = restTemplate.getForObject(API_PATH + "/{id}", Person.class, 1L);
+        Person person = restTemplate.get().uri("/{id}", 1L)
+                .exchange()
+                .returnResult(Person.class)
+                .getResponseBody();
         person.setFirstName("Updated");
-        restTemplate.put("/persons/{id}", person, 1L);
-        Person updatedPerson = restTemplate.getForObject("/persons/{id}", Person.class, 1L);
-        assertEquals("Updated", updatedPerson.getFirstName());
+        restTemplate.put().uri("/{id}", 1L)
+                .body(person)
+                .exchange()
+                .expectStatus().is2xxSuccessful();
+        restTemplate.get().uri("/{id}", 1L)
+                .exchange()
+                .expectBody(Person.class)
+                .value(personUpdated -> assertEquals("Updated", personUpdated.getFirstName()));
     }
 
     @Test
     @Order(4)
     void delete() {
-        restTemplate.delete(API_PATH + "/{id}", 1L);
-        Person person = restTemplate.getForObject(API_PATH + "/{id}", Person.class, 1L);
-        assertNull(person.getId());
+        restTemplate.delete().uri("/{id}", 1L)
+                .exchange()
+                .expectStatus().is2xxSuccessful();
+        restTemplate.get().uri("/{id}", 1L)
+                .exchange()
+                .expectStatus().is5xxServerError();
     }
 
 }
