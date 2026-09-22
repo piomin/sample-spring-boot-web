@@ -34,7 +34,7 @@ steps:
     script: 'oc start-build sample-spring-boot-web-bc -w'
     failOnStderr: true
   displayName: Start build
-  timeoutInMinutes: 5
+  timeoutInMinutes: 3
 - task: CmdLine@2
   inputs:
     script: 'oc status'
