@@ -10,6 +10,13 @@ pool:
   name: Azure Pipelines
 
 steps:
+- script: |
+    echo "Installing oc client..."
+    curl -LO https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz
+    tar -xvf openshift-client-linux.tar.gz
+    sudo mv oc kubectl /usr/local/bin/
+    oc version --client
+  displayName: Install oc
 - task: CmdLine@2
   inputs:
     script: 'oc login https://api.piomin.centralus.aroapp.io:6443 -u kubeadmin -p $(OCP_PASSWORD) --insecure-skip-tls-verify=true'
