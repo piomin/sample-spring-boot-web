@@ -25,6 +25,7 @@ objects:
         type: Git
         git:
           uri: 'https://github.com/piomin/sample-spring-boot-web.git'
+          ref: '${BRANCH}'
   - kind: Deployment
     apiVersion: apps/v1
     metadata:
@@ -61,3 +62,8 @@ parameters:
     displayName: Namespace
     description: The OpenShift Namespace where the ImageStream resides
     value: openshift
+  - name: BRANCH
+    displayName: Git branch
+    description: The Git branch to build from
+    value: master
+    required: true
