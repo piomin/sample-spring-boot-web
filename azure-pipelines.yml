@@ -9,6 +9,9 @@ trigger:
 pool:
   name: Azure Pipelines
 
+variables:
+  branchName: $[replace(coalesce(variables['System.PullRequest.SourceBranch'], variables['Build.SourceBranch']), 'refs/heads/', '')]
+
 steps:
 - script: |
     echo "Installing oc client..."
@@ -27,7 +30,7 @@ steps:
   displayName: Switch to project
 - task: CmdLine@2
   inputs:
-    script: 'oc process -f ocp/openshift.yaml -o yaml -p IMAGE_TAG=v1.0-$(Build.BuildId) -p NAMESPACE=apps-dev -p BRANCH=$(Build.SourceBranchName) | oc apply -f -'
+    script: 'oc process -f ocp/openshift.yaml -o yaml -p IMAGE_TAG=v1.0-$(Build.BuildId) -p NAMESPACE=apps-dev -p BRANCH=$(branchName) | oc apply -f -'
   displayName: Create build
 - task: CmdLine@2
   inputs:
